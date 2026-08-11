@@ -6,6 +6,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
 
@@ -77,8 +78,8 @@ func TestSetAddress(t *testing.T) {
 	require.NoError(t, err)
 	// check
 	row, err := store.Get(id)
-	require.NoError(t, err)
-	require.Equal(t, newAddress, row.Address)
+	assert.NoError(t, err)
+	assert.Equal(t, newAddress, row.Address)
 	// получите добавленную посылку и убедитесь, что адрес обновился
 }
 
@@ -97,10 +98,10 @@ func TestSetStatus(t *testing.T) {
 	require.NotZero(t, id)
 	// set status
 	err = store.SetStatus(id, ParcelStatusSent)
-	require.NoError(t, err)
+	assert.NoError(t, err)
 	row, err := store.Get(id)
-	require.NoError(t, err)
-	require.Equal(t, ParcelStatusSent, row.Status)
+	assert.NoError(t, err)
+	assert.Equal(t, ParcelStatusSent, row.Status)
 
 }
 
@@ -138,16 +139,16 @@ func TestGetByClient(t *testing.T) {
 	// get by client
 	// получите список посылок по идентификатору клиента, сохранённого в переменной client
 	storedParcels, err := store.GetByClient(client)
-	require.NoError(t, err)
-	require.Len(t, storedParcels, len(parcels))
+	assert.NoError(t, err)
+	assert.Len(t, storedParcels, len(parcels))
 	// убедитесь в отсутствии ошибки
 	// убедитесь, что количество полученных посылок совпадает с количеством добавленных
 
 	// check
 	for _, parcel := range storedParcels {
 		exp, ok := parcelMap[parcel.Number]
-		require.True(t, ok, "посылка не найдена в parcelMap")
-		require.Equal(t, exp, parcel)
+		assert.True(t, ok, "посылка не найдена в parcelMap")
+		assert.Equal(t, exp, parcel)
 		// в parcelMap лежат добавленные посылки, ключ - идентификатор посылки, значение - сама посылка
 		// убедитесь, что все посылки из storedParcels есть в parcelMap
 		// убедитесь, что значения полей полученных посылок заполнены верно
